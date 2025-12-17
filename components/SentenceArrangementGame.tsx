@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { KVKV_SENTENCES } from '../constants';
+import { KVKV_SENTENCES, VKV_SENTENCES, KVKVKV_SENTENCES } from '../constants';
 import { speak } from '../services/audioService';
 import { ArrowRight, RefreshCw, CheckCircle2, AlignLeft } from 'lucide-react';
 import confetti from 'canvas-confetti';
@@ -16,14 +16,26 @@ const SentenceArrangementGame: React.FC<Props> = ({ onScoreUpdate, category }) =
   const [userSentence, setUserSentence] = useState<string[]>([]);
   const [isCorrect, setIsCorrect] = useState(false);
 
-  const currentData = KVKV_SENTENCES[currentIndex];
-  const currentSentence = currentData.text;
+  // Determine which dataset to use
+  let sentencesData = KVKV_SENTENCES;
+  if (category === 'VKV') sentencesData = VKV_SENTENCES;
+  else if (category === 'KVKVKV') sentencesData = KVKVKV_SENTENCES;
+  
+  const currentData = sentencesData[currentIndex];
+  const currentSentence = currentData?.text || "";
+
+  useEffect(() => {
+    // Reset level if category changes or index changes
+    setCurrentIndex(0);
+  }, [category]);
 
   useEffect(() => {
     resetLevel();
-  }, [currentIndex]);
+  }, [currentIndex, category]);
 
   const resetLevel = () => {
+    if (!currentSentence) return;
+    
     // Basic split by space
     const words = currentSentence.replace('.', '').split(' ');
     // Scramble
@@ -75,30 +87,32 @@ const SentenceArrangementGame: React.FC<Props> = ({ onScoreUpdate, category }) =
   };
 
   const nextLevel = () => {
-    if (currentIndex < KVKV_SENTENCES.length - 1) {
+    if (currentIndex < sentencesData.length - 1) {
       setCurrentIndex(c => c + 1);
     } else {
       setCurrentIndex(0); // Loop back
     }
   };
 
-  // If this game is accessed from 'KV' category (which shouldn't happen by UI logic but good for safety), display message
+  // If this game is accessed from 'KV' category, display message
   if (category === 'KV') {
       return (
           <div className="flex flex-col items-center justify-center min-h-[60vh] text-center p-8">
               <div className="bg-yellow-100 text-yellow-800 p-6 rounded-3xl mb-4">
                   <AlignLeft size={48} className="mx-auto mb-2"/>
-                  <h3 className="text-xl font-bold">Permainan ini untuk kategori KVKV sahaja.</h3>
+                  <h3 className="text-xl font-bold">Permainan ini untuk kategori VKV, KVKV dan KVKVKV sahaja.</h3>
               </div>
           </div>
       )
   }
 
+  if (!currentData) return <div>Loading...</div>;
+
   return (
     <div className="flex flex-col items-center justify-start min-h-[70vh] w-full max-w-3xl mx-auto px-4 py-8">
       <div className="mb-8 text-center">
         <div className="inline-block px-3 py-1 bg-gray-100 rounded-full text-xs font-bold text-gray-500 mb-2">
-            Susun Ayat
+            Susun Ayat ({category === 'VKV' ? 'V+KV' : category === 'KVKVKV' ? 'KV+KV+KV' : 'KV+KV'})
         </div>
         <h2 className="text-2xl font-bold text-gray-700">Level {currentIndex + 1}</h2>
         

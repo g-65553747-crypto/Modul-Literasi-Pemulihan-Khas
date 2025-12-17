@@ -1,6 +1,5 @@
-
 import React, { useState, useEffect, useCallback } from 'react';
-import { SYLLABLE_DATA, KVKV_WORDS } from '../constants';
+import { SYLLABLE_DATA, KVKV_WORDS, VKV_WORDS, KVKVKV_WORDS } from '../constants';
 import { speak } from '../services/audioService';
 import { Volume2, CheckCircle2, XCircle, RefreshCw, ArrowLeft } from 'lucide-react';
 import confetti from 'canvas-confetti';
@@ -23,6 +22,10 @@ const QuizGame: React.FC<QuizGameProps> = ({ onScoreUpdate, category }) => {
 
     if (category === 'KV') {
         pool = SYLLABLE_DATA.flatMap(group => group.items);
+    } else if (category === 'VKV') {
+        pool = VKV_WORDS.map(w => w.word);
+    } else if (category === 'KVKVKV') {
+        pool = KVKVKV_WORDS.map(w => w.word);
     } else {
         pool = KVKV_WORDS.map(w => w.word);
     }
@@ -94,7 +97,7 @@ const QuizGame: React.FC<QuizGameProps> = ({ onScoreUpdate, category }) => {
     <div className="flex flex-col items-center justify-center min-h-[80vh] px-4 pb-20">
       <div className="mb-8 text-center">
         <div className="inline-block px-3 py-1 bg-gray-100 rounded-full text-xs font-bold text-gray-500 mb-2">
-            Kategori: {category === 'KV' ? 'Suku Kata' : 'Perkataan'}
+            Kategori: {category === 'KV' ? 'Suku Kata' : category === 'VKV' ? 'V + KV' : category === 'KVKVKV' ? 'KV + KV + KV' : 'Perkataan'}
         </div>
         <h2 className="text-3xl font-bold text-gray-700 mb-2">Dengar & Pilih</h2>
         <div className="inline-flex items-center gap-2 bg-yellow-100 text-yellow-800 px-4 py-1 rounded-full text-sm font-bold">
@@ -121,8 +124,8 @@ const QuizGame: React.FC<QuizGameProps> = ({ onScoreUpdate, category }) => {
            
            let finalClass = `
               relative h-32 rounded-3xl border-b-8 border-x-2 border-t-2 
-              text-4xl md:text-5xl font-black shadow-lg transition-all transform duration-200
-              flex items-center justify-center px-2 text-center leading-tight
+              text-3xl md:text-5xl font-black shadow-lg transition-all transform duration-200
+              flex items-center justify-center px-2 text-center leading-tight break-all sm:break-normal
            `;
 
            // State styling

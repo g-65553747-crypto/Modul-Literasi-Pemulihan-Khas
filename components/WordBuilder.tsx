@@ -1,6 +1,5 @@
-
 import React, { useState, useEffect } from 'react';
-import { WORD_BUILDER_TARGETS, SYLLABLE_DATA, KVKV_WORDS } from '../constants';
+import { WORD_BUILDER_TARGETS, SYLLABLE_DATA, KVKV_WORDS, VKV_WORDS, KVKVKV_WORDS } from '../constants';
 import { speak } from '../services/audioService';
 import { Check, ArrowRight, RefreshCw } from 'lucide-react';
 import confetti from 'canvas-confetti';
@@ -22,6 +21,18 @@ const WordBuilder: React.FC<WordBuilderProps> = ({ onScoreUpdate, category }) =>
     let targets: WordTarget[] = [];
     if (category === 'KV') {
         targets = WORD_BUILDER_TARGETS; // Use existing simple word list
+    } else if (category === 'VKV') {
+        targets = VKV_WORDS.map(k => ({
+            word: k.word,
+            syllables: k.syllables,
+            imagePrompt: k.image || '❓'
+        }));
+    } else if (category === 'KVKVKV') {
+        targets = KVKVKV_WORDS.map(k => ({
+            word: k.word,
+            syllables: k.syllables,
+            imagePrompt: k.image || '❓'
+        }));
     } else {
         // Map KVKV data to WordTarget structure
         targets = KVKV_WORDS.map(k => ({
@@ -95,7 +106,7 @@ const WordBuilder: React.FC<WordBuilderProps> = ({ onScoreUpdate, category }) =>
     <div className="flex flex-col items-center min-h-[80vh] px-4 pt-10">
       <div className="mb-8 text-center">
         <div className="inline-block px-3 py-1 bg-gray-100 rounded-full text-xs font-bold text-gray-500 mb-2">
-            Kategori: {category === 'KV' ? 'Suku Kata' : 'Perkataan'}
+            Kategori: {category === 'KV' ? 'Suku Kata' : category === 'VKV' ? 'V + KV' : category === 'KVKVKV' ? 'KV + KV + KV' : 'Perkataan'}
         </div>
         <h2 className="text-3xl font-bold text-gray-700 mb-2">Bina Kata</h2>
         

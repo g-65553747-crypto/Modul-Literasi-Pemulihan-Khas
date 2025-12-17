@@ -1,10 +1,10 @@
 import React, { useState } from 'react';
 import InteractiveList from './InteractiveList';
 import SentenceCards from './SentenceCards';
-import { KVKV_WORDS, KVKV_PHRASES, KVKV_SENTENCES } from '../constants';
+import { KVKVKV_WORDS, KVKVKV_PHRASES, KVKVKV_SENTENCES } from '../constants';
 import { Type, MessageSquare, AlignLeft } from 'lucide-react';
 
-const KvKvManager: React.FC = () => {
+const KvkVkVManager: React.FC = () => {
   const [activeTab, setActiveTab] = useState<'words' | 'phrases' | 'sentences'>('words');
 
   return (
@@ -15,7 +15,7 @@ const KvKvManager: React.FC = () => {
             <button
                 onClick={() => setActiveTab('words')}
                 className={`flex items-center gap-2 px-4 py-2 rounded-xl text-sm font-bold transition-all ${
-                    activeTab === 'words' ? 'bg-blue-500 text-white shadow-md' : 'text-gray-500 hover:bg-gray-50'
+                    activeTab === 'words' ? 'bg-pink-500 text-white shadow-md' : 'text-gray-500 hover:bg-gray-50'
                 }`}
             >
                 <Type size={18} /> Perkataan
@@ -43,19 +43,19 @@ const KvKvManager: React.FC = () => {
       <div className="animate-fade-in">
         {activeTab === 'words' && (
             <div className="text-center">
-                <h2 className="text-2xl font-bold text-gray-700 mb-6">Mari Belajar Perkataan KV+KV</h2>
-                <InteractiveList mode="words" data={KVKV_WORDS} />
+                <h2 className="text-2xl font-bold text-gray-700 mb-6">Mari Belajar Perkataan KV+KV+KV</h2>
+                <InteractiveList mode="words" data={KVKVKV_WORDS} />
             </div>
         )}
         {activeTab === 'phrases' && (
              <div className="text-center">
                 <h2 className="text-2xl font-bold text-gray-700 mb-6">Mari Baca Frasa</h2>
-                <InteractiveList mode="phrases" data={KVKV_PHRASES} />
+                <InteractiveList mode="phrases" data={KVKVKV_PHRASES} />
              </div>
         )}
         {activeTab === 'sentences' && (
             <div>
-                 <SentenceCards data={KVKV_SENTENCES} />
+                 <SentenceCards data={KVKVKV_SENTENCES} />
             </div>
         )}
       </div>
@@ -63,4 +63,4 @@ const KvKvManager: React.FC = () => {
   );
 };
 
-export default KvKvManager;
+export default KvkVkVManager;

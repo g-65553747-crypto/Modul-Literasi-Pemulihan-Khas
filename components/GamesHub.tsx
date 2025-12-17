@@ -1,7 +1,6 @@
-
 import React, { useState } from 'react';
 import { GameMode, GameCategory } from '../types';
-import { HelpCircle, Grid, PlayCircle, Layers, ArrowRight, Gamepad2, Type, BookOpen, AlignLeft } from 'lucide-react';
+import { HelpCircle, Grid, PlayCircle, Layers, ArrowRight, Gamepad2, Type, BookOpen, AlignLeft, Star, Layers3 } from 'lucide-react';
 
 interface GamesHubProps {
   setMode: (mode: GameMode) => void;
@@ -18,10 +17,10 @@ const GamesHub: React.FC<GamesHubProps> = ({ setMode, setCategory }) => {
     { mode: GameMode.BUILDER, title: 'Bina Kata', desc: 'Susun Huruf/Suku Kata', icon: Layers, color: 'bg-orange-100 text-orange-600' },
   ];
 
-  // Specific game for KVKV
+  // Specific game for KVKV, VKV, KVKVKV
   const sentenceGame = { mode: GameMode.SENTENCE_ARRANGE, title: 'Susun Ayat', desc: 'Bina Ayat Lengkap', icon: AlignLeft, color: 'bg-indigo-100 text-indigo-600' };
 
-  const activeGames = activeTab === 'KVKV' ? [...games, sentenceGame] : games;
+  const activeGames = (activeTab === 'KVKV' || activeTab === 'VKV' || activeTab === 'KVKVKV') ? [...games, sentenceGame] : games;
 
   const handleGameSelect = (mode: GameMode) => {
       setCategory(activeTab);
@@ -40,22 +39,38 @@ const GamesHub: React.FC<GamesHubProps> = ({ setMode, setCategory }) => {
 
         {/* Tabs */}
         <div className="flex justify-center mb-8">
-            <div className="bg-white p-1.5 rounded-2xl shadow-sm border border-gray-100 flex gap-1 w-full max-w-sm">
+            <div className="bg-white p-1.5 rounded-2xl shadow-sm border border-gray-100 flex flex-wrap gap-1 w-full max-w-2xl">
                 <button
                     onClick={() => setActiveTab('KV')}
-                    className={`flex-1 flex items-center justify-center gap-2 px-4 py-3 rounded-xl text-sm font-bold transition-all ${
+                    className={`flex-1 flex items-center justify-center gap-2 px-3 py-3 rounded-xl text-xs sm:text-sm font-bold transition-all whitespace-nowrap ${
                         activeTab === 'KV' ? 'bg-blue-500 text-white shadow-md' : 'text-gray-500 hover:bg-gray-50'
                     }`}
                 >
-                    <BookOpen size={18} /> Suku Kata
+                    <BookOpen size={16} /> KV
+                </button>
+                <button
+                    onClick={() => setActiveTab('VKV')}
+                    className={`flex-1 flex items-center justify-center gap-2 px-3 py-3 rounded-xl text-xs sm:text-sm font-bold transition-all whitespace-nowrap ${
+                        activeTab === 'VKV' ? 'bg-orange-500 text-white shadow-md' : 'text-gray-500 hover:bg-gray-50'
+                    }`}
+                >
+                    <Star size={16} /> V+KV
                 </button>
                 <button
                     onClick={() => setActiveTab('KVKV')}
-                    className={`flex-1 flex items-center justify-center gap-2 px-4 py-3 rounded-xl text-sm font-bold transition-all ${
+                    className={`flex-1 flex items-center justify-center gap-2 px-3 py-3 rounded-xl text-xs sm:text-sm font-bold transition-all whitespace-nowrap ${
                         activeTab === 'KVKV' ? 'bg-teal-500 text-white shadow-md' : 'text-gray-500 hover:bg-gray-50'
                     }`}
                 >
-                    <Type size={18} /> Perkataan
+                    <Type size={16} /> KV+KV
+                </button>
+                 <button
+                    onClick={() => setActiveTab('KVKVKV')}
+                    className={`flex-1 flex items-center justify-center gap-2 px-3 py-3 rounded-xl text-xs sm:text-sm font-bold transition-all whitespace-nowrap ${
+                        activeTab === 'KVKVKV' ? 'bg-pink-500 text-white shadow-md' : 'text-gray-500 hover:bg-gray-50'
+                    }`}
+                >
+                    <Layers3 size={16} /> KV+KV+KV
                 </button>
             </div>
         </div>
@@ -86,8 +101,10 @@ const GamesHub: React.FC<GamesHubProps> = ({ setMode, setCategory }) => {
         
         <div className="mt-8 text-center bg-blue-50 rounded-xl p-4 border border-blue-100">
             <p className="text-sm text-blue-800 font-medium">
-                Anda sedang memilih permainan untuk kategori: 
-                <span className="font-black ml-1 uppercase">{activeTab === 'KV' ? 'Suku Kata (KV)' : 'Perkataan (KV+KV)'}</span>
+                Kategori: 
+                <span className="font-black ml-1 uppercase">
+                    {activeTab === 'KV' ? 'Suku Kata (KV)' : activeTab === 'VKV' ? 'Perkataan (V+KV)' : activeTab === 'KVKV' ? 'Perkataan (KV+KV)' : 'Perkataan (KV+KV+KV)'}
+                </span>
             </p>
         </div>
     </div>

@@ -1,6 +1,5 @@
-
 import React, { useRef, useEffect, useState } from 'react';
-import { SYLLABLE_DATA, KVKV_WORDS } from '../constants';
+import { SYLLABLE_DATA, KVKV_WORDS, VKV_WORDS, KVKVKV_WORDS } from '../constants';
 import { speak } from '../services/audioService';
 import { GameCategory } from '../types';
 
@@ -33,6 +32,10 @@ const BubblePop: React.FC<BubblePopProps> = ({ onScoreUpdate, category }) => {
   const getPool = () => {
       if (category === 'KV') {
           return SYLLABLE_DATA.flatMap(g => g.items);
+      } else if (category === 'VKV') {
+          return VKV_WORDS.map(w => w.word);
+      } else if (category === 'KVKVKV') {
+          return KVKVKV_WORDS.map(w => w.word);
       } else {
           return KVKV_WORDS.map(w => w.word);
       }

@@ -1,6 +1,5 @@
-
 import React, { useState, useEffect } from 'react';
-import { SYLLABLE_DATA, COLORS, KVKV_WORDS } from '../constants';
+import { SYLLABLE_DATA, COLORS, KVKV_WORDS, VKV_WORDS, KVKVKV_WORDS } from '../constants';
 import { speak } from '../services/audioService';
 import { RefreshCcw } from 'lucide-react';
 import confetti from 'canvas-confetti';
@@ -29,6 +28,10 @@ const MemoryGame: React.FC<MemoryGameProps> = ({ onScoreUpdate, category }) => {
 
     if (category === 'KV') {
         pool = SYLLABLE_DATA.flatMap(g => g.items);
+    } else if (category === 'VKV') {
+        pool = VKV_WORDS.map(w => w.word);
+    } else if (category === 'KVKVKV') {
+        pool = KVKVKV_WORDS.map(w => w.word);
     } else {
         pool = KVKV_WORDS.map(w => w.word);
     }
@@ -113,7 +116,7 @@ const MemoryGame: React.FC<MemoryGameProps> = ({ onScoreUpdate, category }) => {
       <div className="flex justify-between items-center w-full max-w-md mb-8">
         <div>
             <div className="text-xs font-bold text-gray-400 uppercase tracking-wide">
-                {category === 'KV' ? 'Suku Kata' : 'Perkataan'}
+                {category === 'KV' ? 'Suku Kata' : category === 'VKV' ? 'V + KV' : category === 'KVKVKV' ? 'KV + KV + KV' : 'Perkataan'}
             </div>
             <h2 className="text-3xl font-bold text-gray-700">Memory Match</h2>
         </div>
@@ -144,7 +147,7 @@ const MemoryGame: React.FC<MemoryGameProps> = ({ onScoreUpdate, category }) => {
               
               {/* Back (Revealed state) */}
               <div className={`card-back absolute w-full h-full rounded-xl shadow-md border-b-4 border-gray-200 bg-white flex items-center justify-center`}>
-                <span className={`text-xl sm:text-2xl font-bold text-gray-800 break-words px-1`}>{card.content}</span>
+                <span className={`text-lg sm:text-2xl font-bold text-gray-800 break-words px-1`}>{card.content}</span>
               </div>
             </div>
           </div>
